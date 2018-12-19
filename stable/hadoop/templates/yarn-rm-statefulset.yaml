@@ -20,6 +20,10 @@ spec:
         release: {{ .Release.Name }}
         component: yarn-rm
     spec:
+{{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+{{- end }}
       affinity:
         podAntiAffinity:
         {{- if eq .Values.antiAffinity "hard" }}

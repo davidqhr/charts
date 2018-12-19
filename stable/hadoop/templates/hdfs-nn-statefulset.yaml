@@ -20,6 +20,10 @@ spec:
         release: {{ .Release.Name }}
         component: hdfs-nn
     spec:
+{{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+{{- end }}
       affinity:
         podAntiAffinity:
         {{- if eq .Values.antiAffinity "hard" }}
@@ -77,6 +81,6 @@ spec:
       {{- if .Values.persistence.nameNode.enabled }}
         persistentVolumeClaim:
           claimName: {{ template "hadoop.fullname" . }}-hdfs-nn
-      {{- else }}        
+      {{- else }}
         emptyDir: {}
       {{- end }}
